@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Central de Apps</title>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            /* Paleta de cores inspirada no Hub da Casa */
+            --bg-color: #121212;
+            --surface-color: #1e1e1e;
+            --primary-color: #bb86fc;
+            --secondary-color: #03dac6;
+            --text-color: #e1e1e1;
+            --text-muted: #888888;
+        }
+
+        /* Reset básico */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* Header inspirado no Hub */
+        header {
+            background-color: var(--surface-color);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+            width: 100%;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            margin-bottom: 20px;
+        }
+
+        header h1 {
+            font-size: 1.4rem;
+            color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .header-subtitle {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-top: 5px;
+        }
+
+        /* Container da lista */
+        .download-container {
+            width: 100%;
+            max-width: 600px;
+            padding: 0 20px 30px 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        /* Card Modernizado */
+        .download-card {
+            background-color: var(--surface-color);
+            border-radius: 20px;
+            padding: 16px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            box-shadow: 0 6px 12px rgba(0,0,0,0.25);
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            transition: transform 0.2s, box-shadow 0.2s, background-color 0.2s;
+            animation: fadeIn 0.4s ease-out forwards;
+            opacity: 0; /* Para a animação inicial */
+        }
+
+        /* Animação em cascata (delay para os cards) */
+        .download-card:nth-child(1) { animation-delay: 0.1s; }
+        .download-card:nth-child(2) { animation-delay: 0.2s; }
+
+        .download-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.4);
+            background-color: #232323;
+        }
+
+        .download-card:active {
+            transform: scale(0.98);
+        }
+
+        /* Ícone do App */
+        .app-icon {
+            width: 64px;
+            height: 64px;
+            border-radius: 16px;
+            object-fit: cover;
+            background-color: #333;
+            flex-shrink: 0;
+            border: 2px solid rgba(255,255,255,0.05);
+        }
+
+        /* Textos */
+        .app-info {
+            flex-grow: 1;
+            min-width: 0;
+        }
+
+        .app-name {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-color);
+            margin-bottom: 4px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .app-description {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            line-height: 1.3;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        /* Botão estilizado */
+        .download-btn {
+            background-color: rgba(187, 134, 252, 0.15); /* Fundo roxo transparente */
+            color: var(--primary-color);
+            border: 1px solid var(--primary-color);
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: bold;
+            transition: all 0.2s;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .download-btn:hover {
+            background-color: var(--primary-color);
+            color: #000;
+            box-shadow: 0 0 10px rgba(187, 134, 252, 0.4);
+        }
+
+        /* Segunda variação de botão (Opcional: usando a cor secundária) */
+        .btn-secondary {
+            background-color: rgba(3, 218, 198, 0.15);
+            color: var(--secondary-color);
+            border-color: var(--secondary-color);
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--secondary-color);
+            color: #000;
+            box-shadow: 0 0 10px rgba(3, 218, 198, 0.4);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Responsividade */
+        @media (max-width: 480px) {
+            .download-card {
+                flex-direction: column;
+                text-align: center;
+                padding: 24px 16px;
+            }
+
+            .download-btn {
+                width: 100%;
+                justify-content: center;
+                margin-top: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1><i class="fas fa-cloud-download-alt"></i> Central de Apps</h1>
+        <p class="header-subtitle">Selecione um aplicativo abaixo para baixar</p>
+    </header>
+
+    <div class="download-container">
+
+
+
+
+
+        <div class="download-card">
+            <img src="https://files.catbox.moe/8fo384.png" alt="Ícone do App Collab" class="app-icon">
+            
+            <div class="app-info">
+                <h2 class="app-name">Collab</h2>
+                <p class="app-description">Este é um app de gerenciamento da sua casa com a sua família.</p>
+            </div>
+            
+            <a href="collab.apk" download class="download-btn">
+    <i class="fas fa-download"></i> Baixar
+            </a>
+        </div>
+
+
+
+
+
+    </div>
+
+</body>
+</html>
+
