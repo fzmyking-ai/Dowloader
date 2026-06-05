@@ -15,6 +15,7 @@
             --primary-color: #bb86fc;
             --secondary-color: #03dac6;
             --red-color: #ff5252;
+            --blue-color: #38bdf8; /* Nova cor para o Brain Test */
             --text-color: #e1e1e1;
             --text-muted: #888888;
         }
@@ -95,6 +96,7 @@
         .download-card:nth-child(1) { animation-delay: 0.1s; }
         .download-card:nth-child(2) { animation-delay: 0.2s; }
         .download-card:nth-child(3) { animation-delay: 0.3s; }
+        .download-card:nth-child(4) { animation-delay: 0.4s; }
 
         .download-card:hover {
             transform: translateY(-4px);
@@ -202,6 +204,19 @@
             box-shadow: 0 0 10px rgba(255, 82, 82, 0.4);
         }
 
+        /* Variação de botão: Azul (Brain Test) */
+        .btn-blue {
+            background-color: rgba(56, 189, 248, 0.15);
+            color: var(--blue-color);
+            border-color: var(--blue-color);
+        }
+
+        .btn-blue:hover {
+            background-color: var(--blue-color);
+            color: #000;
+            box-shadow: 0 0 10px rgba(56, 189, 248, 0.4);
+        }
+
         /* Estilização do Toast (Notificação) */
         .toast {
             position: fixed;
@@ -214,7 +229,7 @@
             border-radius: 30px;
             font-weight: bold;
             font-size: 0.95rem;
-            box-shadow: 0 8px 24px rgba(3, 218, 198, 0.3);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.3);
             display: flex;
             align-items: center;
             gap: 10px;
@@ -309,6 +324,19 @@
             </a>
         </div>
 
+        <div class="download-card">
+            <img src="https://files.catbox.moe/53dj9y.png" alt="Ícone do App Brain Test" class="app-icon">
+            
+            <div class="app-info">
+                <h2 class="app-name">Brain Test</h2>
+                <p class="app-description">Este é um app focado em testar sua habilidade cognitiva através de minijogos de reação e memória. Desafie seus amigos e dispute pelo high score!</p>
+            </div>
+            
+            <a href="BrainTest.apk" download class="download-btn btn-blue">
+                <i class="fas fa-download"></i> Baixar
+            </a>
+        </div>
+
     </div>
 
     <div id="download-toast" class="toast">
@@ -335,13 +363,19 @@
                 const toast = document.getElementById('download-toast');
                 const toastText = document.getElementById('toast-text');
 
-                // Altera dinamicamente a cor de fundo do toast se for o app Stop
+                // Altera dinamicamente a cor de fundo do toast conforme o app clicado
                 if(button.classList.contains('btn-red')) {
                     toast.style.backgroundColor = 'var(--red-color)';
+                    toast.style.color = '#fff';
                 } else if(button.classList.contains('btn-secondary')) {
                     toast.style.backgroundColor = 'var(--secondary-color)';
+                    toast.style.color = '#121212';
+                } else if(button.classList.contains('btn-blue')) {
+                    toast.style.backgroundColor = 'var(--blue-color)';
+                    toast.style.color = '#121212';
                 } else {
                     toast.style.backgroundColor = 'var(--primary-color)';
+                    toast.style.color = '#121212';
                 }
 
                 // Define o texto customizado
