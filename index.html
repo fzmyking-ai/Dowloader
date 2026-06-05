@@ -14,6 +14,7 @@
             --surface-color: #1e1e1e;
             --primary-color: #bb86fc;
             --secondary-color: #03dac6;
+            --red-color: #ff5252;
             --text-color: #e1e1e1;
             --text-muted: #888888;
         }
@@ -93,6 +94,7 @@
         /* Animação em cascata (delay para os cards) */
         .download-card:nth-child(1) { animation-delay: 0.1s; }
         .download-card:nth-child(2) { animation-delay: 0.2s; }
+        .download-card:nth-child(3) { animation-delay: 0.3s; }
 
         .download-card:hover {
             transform: translateY(-4px);
@@ -119,7 +121,7 @@
         .app-info {
             flex-grow: 1;
             min-width: 0;
-            cursor: pointer; /* Indica que é clicável */
+            cursor: pointer;
         }
 
         .app-name {
@@ -151,9 +153,9 @@
             animation: expandFade 0.3s ease-out;
         }
 
-        /* Botão estilizado */
+        /* Botão estilizado (Padrão / Roxo) */
         .download-btn {
-            background-color: rgba(187, 134, 252, 0.15); /* Fundo roxo transparente */
+            background-color: rgba(187, 134, 252, 0.15);
             color: var(--primary-color);
             border: 1px solid var(--primary-color);
             text-decoration: none;
@@ -174,7 +176,7 @@
             box-shadow: 0 0 10px rgba(187, 134, 252, 0.4);
         }
 
-        /* Segunda variação de botão (Opcional: usando a cor secundária) */
+        /* Variação de botão: Azul/Verde Secundário (Modu) */
         .btn-secondary {
             background-color: rgba(3, 218, 198, 0.15);
             color: var(--secondary-color);
@@ -185,6 +187,19 @@
             background-color: var(--secondary-color);
             color: #000;
             box-shadow: 0 0 10px rgba(3, 218, 198, 0.4);
+        }
+
+        /* Variação de botão: Vermelho (Stop) */
+        .btn-red {
+            background-color: rgba(255, 82, 82, 0.15);
+            color: var(--red-color);
+            border-color: var(--red-color);
+        }
+
+        .btn-red:hover {
+            background-color: var(--red-color);
+            color: #000;
+            box-shadow: 0 0 10px rgba(255, 82, 82, 0.4);
         }
 
         /* Estilização do Toast (Notificação) */
@@ -273,10 +288,23 @@
             
             <div class="app-info">
                 <h2 class="app-name">Modu</h2>
-                <p class="app-description">Já pensou em organizar seus trabalhos, notas e prazos de um jeito totalmente flexível e sem complicação? O Painel Modular é um organizador dinâmico que roda direto no navegador, permitindo criar categorias e estruturar blocos de texto, listas, imagens e arquivos exatamente como você quiser. Ele salva tudo no seu dispositivo de forma segura, possui alertas para tarefas que vencem no dia e se adapta à sua rotina com suporte aos modos claro e escuro.</p>
+                <p class="app-description">Este é um organizador dinâmico para estruturar seus trabalhos, notas e prazos. Crie categorias e blocos de forma totalmente flexível no seu dispositivo.</p>
             </div>
             
             <a href="modu.apk" download class="download-btn btn-secondary">
+                <i class="fas fa-download"></i> Baixar
+            </a>
+        </div>
+
+        <div class="download-card">
+            <img src="https://files.catbox.moe/5ntjys.png" alt="Ícone do App Stop" class="app-icon">
+            
+            <div class="app-info">
+                <h2 class="app-name">Stop</h2>
+                <p class="app-description">Esse jogo é literalmente um stop, crie uma sala e jogue com os seus amigos.</p>
+            </div>
+            
+            <a href="Stop.apk" download class="download-btn btn-red">
                 <i class="fas fa-download"></i> Baixar
             </a>
         </div>
@@ -306,6 +334,15 @@
                 const appName = card.querySelector('.app-name').textContent;
                 const toast = document.getElementById('download-toast');
                 const toastText = document.getElementById('toast-text');
+
+                // Altera dinamicamente a cor de fundo do toast se for o app Stop
+                if(button.classList.contains('btn-red')) {
+                    toast.style.backgroundColor = 'var(--red-color)';
+                } else if(button.classList.contains('btn-secondary')) {
+                    toast.style.backgroundColor = 'var(--secondary-color)';
+                } else {
+                    toast.style.backgroundColor = 'var(--primary-color)';
+                }
 
                 // Define o texto customizado
                 toastText.textContent = `Obrigado por instalar o ${appName}! ❤️`;
