@@ -34,6 +34,7 @@
             display: flex;
             flex-direction: column;
             align-items: center;
+            overflow-x: hidden;
         }
 
         /* Header inspirado no Hub */
@@ -100,7 +101,7 @@
         }
 
         .download-card:active {
-            transform: scale(0.98);
+            transform: scale(0.99);
         }
 
         /* Ícone do App */
@@ -118,6 +119,7 @@
         .app-info {
             flex-grow: 1;
             min-width: 0;
+            cursor: pointer; /* Indica que é clicável */
         }
 
         .app-name {
@@ -133,11 +135,20 @@
         .app-description {
             font-size: 0.85rem;
             color: var(--text-muted);
-            line-height: 1.3;
+            line-height: 1.4;
             display: -webkit-box;
             -webkit-line-clamp: 2;
             -webkit-box-orient: vertical;
             overflow: hidden;
+            transition: color 0.2s ease;
+        }
+
+        /* Estado expandido da descrição */
+        .download-card.expanded .app-description {
+            display: block;
+            overflow: visible;
+            color: var(--text-color);
+            animation: expandFade 0.3s ease-out;
         }
 
         /* Botão estilizado */
@@ -176,8 +187,42 @@
             box-shadow: 0 0 10px rgba(3, 218, 198, 0.4);
         }
 
+        /* Estilização do Toast (Notificação) */
+        .toast {
+            position: fixed;
+            bottom: -70px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: var(--secondary-color);
+            color: #121212;
+            padding: 14px 24px;
+            border-radius: 30px;
+            font-weight: bold;
+            font-size: 0.95rem;
+            box-shadow: 0 8px 24px rgba(3, 218, 198, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            z-index: 1000;
+            opacity: 0;
+            transition: bottom 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.3s ease;
+            pointer-events: none;
+            white-space: nowrap;
+        }
+
+        .toast.show {
+            bottom: 30px;
+            opacity: 1;
+        }
+
+        /* Animações */
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes expandFade {
+            from { opacity: 0.6; transform: translateY(-2px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
@@ -187,6 +232,10 @@
                 flex-direction: column;
                 text-align: center;
                 padding: 24px 16px;
+            }
+
+            .download-card.expanded .app-name {
+                white-space: normal;
             }
 
             .download-btn {
@@ -206,42 +255,71 @@
 
     <div class="download-container">
 
-
-
-
-
         <div class="download-card">
             <img src="https://files.catbox.moe/8fo384.png" alt="Ícone do App Collab" class="app-icon">
             
             <div class="app-info">
                 <h2 class="app-name">Collab</h2>
-                <p class="app-description">Este é um app de gerenciamento da sua casa com a sua família.</p>
+                <p class="app-description">Este é um app de gerenciamento da sua casa com a sua família. Centralize tarefas, listas de compras e avisos importantes em um só lugar prático.</p>
             </div>
             
             <a href="collab.apk" download class="download-btn">
-    <i class="fas fa-download"></i> Baixar
+                <i class="fas fa-download"></i> Baixar
             </a>
         </div>
 
-       <div class="download-card">
+        <div class="download-card">
             <img src="https://files.catbox.moe/5yrykp.png" alt="Ícone do App Modu" class="app-icon">
             
             <div class="app-info">
                 <h2 class="app-name">Modu</h2>
-                <p class="app-description">Já pensou em organizar seus trabalhos, notas e prazos de um jeito totalmente flexível e sem complicação? O Painel Modular é um organizador dinâmico que roda direto no navegador, permitindo criar categorias e estruturar blocos de texto, listas, imagens e arquivos exatamente como você quiser. Ele salva tudo no seu dispositivo de forma segura, possui alertas para tarefas que vencem no dia e se adapta à sua rotina com suporte aos modos claro e escuro.p</p>
+                <p class="app-description">Já pensou em organizar seus trabalhos, notas e prazos de um jeito totalmente flexível e sem complicação? O Painel Modular é um organizador dinâmico que roda direto no navegador, permitindo criar categorias e estruturar blocos de texto, listas, imagens e arquivos exatamente como você quiser. Ele salva tudo no seu dispositivo de forma segura, possui alertas para tarefas que vencem no dia e se adapta à sua rotina com suporte aos modos claro e escuro.</p>
             </div>
             
-            <a href="modu.apk" download class="download-btn">
-    <i class="fas fa-download"></i> Baixar
+            <a href="modu.apk" download class="download-btn btn-secondary">
+                <i class="fas fa-download"></i> Baixar
             </a>
-                </div>
-
-
-
-
+        </div>
 
     </div>
 
+    <div id="download-toast" class="toast">
+        <i class="fas fa-heart"></i> <span id="toast-text">Obrigado por instalar! ❤️</span>
+    </div>
+
+    <script>
+        // Função para alternar a expansão da descrição ao clicar nas informações do app
+        document.querySelectorAll('.app-info').forEach(infoSection => {
+            infoSection.addEventListener('click', () => {
+                const card = infoSection.closest('.download-card');
+                card.classList.toggle('expanded');
+            });
+        });
+
+        // Função para exibir o Toast de agradecimento personalizado ao clicar em "Baixar"
+        document.querySelectorAll('.download-btn').forEach(button => {
+            button.addEventListener('click', (event) => {
+                // Impede que o clique no botão também abra/feche a descrição do card
+                event.stopPropagation();
+
+                const card = button.closest('.download-card');
+                const appName = card.querySelector('.app-name').textContent;
+                const toast = document.getElementById('download-toast');
+                const toastText = document.getElementById('toast-text');
+
+                // Define o texto customizado
+                toastText.textContent = `Obrigado por instalar o ${appName}! ❤️`;
+                
+                // Exibe o toast com animação
+                toast.classList.add('show');
+
+                // Remove o toast após 3.5 segundos
+                setTimeout(() => {
+                    toast.classList.remove('show');
+                }, 3500);
+            });
+        });
+    </script>
+
 </body>
 </html>
-
